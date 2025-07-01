@@ -2,16 +2,20 @@ class Node
   attr_accessor :location, :connections, :connection_hash
 
   def initialize(location)
+    if location.nil? || (location.is_a?(String) && location.strip.empty?)
+      raise ArgumentError, 'location is required'
+    end
+
     @location = location
     @connections = []
     @connection_hash = {}
   end
 
-  def connect_to(target_node, departing_date:, arriving_date:, rate:, rate_currency:, code:)
+  def connect_to(target_node, departure_date:, arrival_date:, rate:, rate_currency:, code:)
     connection = Connection.new(self,
                                 target_node,
-                                departing_date:,
-                                arriving_date:,
+                                departure_date:,
+                                arrival_date:,
                                 rate:,
                                 rate_currency:,
                                 code:
